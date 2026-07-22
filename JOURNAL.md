@@ -17,3 +17,8 @@ I selected this Tier 1 issue because it is a localized bug in the RAG evaluation
 **Setup confirmation:** [x] App runs locally at localhost:5173
 
 **Cohort ledger:** [x] Issue added to cohort ledger
+
+## Week 8 — Reproduction & solution planning
+
+**Reproduction summary:**
+I reproduced Issue #153 locally by running `pytest tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text -v`. The test failed in `rag/evaluator/faithfulness_checker.py` with `TypeError: sequence item 0: expected str instance, NoneType found`, confirming that `FaithfulnessChecker.check()` crashes when a context chunk contains `"text": None`.
