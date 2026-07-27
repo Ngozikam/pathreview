@@ -18,7 +18,32 @@ I selected this Tier 1 issue because it is a localized bug in the RAG evaluation
 
 **Cohort ledger:** [x] Issue added to cohort ledger
 
-## Week 8 — Reproduction & solution planning
+
+## Week 8 — Reproduction & Solution Planning
+
+**Reproduction commit link:**
+https://github.com/Ngozikam/pathreview/commit/ec405bd
 
 **Reproduction summary:**
-I reproduced Issue #153 locally by running `pytest tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text -v`. The test failed in `rag/evaluator/faithfulness_checker.py` with `TypeError: sequence item 0: expected str instance, NoneType found`, confirming that `FaithfulnessChecker.check()` crashes when a context chunk contains `"text": None`.
+I reproduced Issue #153 locally by running:
+
+```bash
+pytest tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text -v
+```
+
+The test failed in `rag/evaluator/faithfulness_checker.py` with:
+
+```
+TypeError: sequence item 0: expected str instance, NoneType found
+```
+
+This confirms that `FaithfulnessChecker.check()` crashes when a context chunk contains `"text": None`.
+
+**PLAN.md link:**
+https://github.com/Ngozikam/pathreview/blob/fix/153-none-context-chunk-text/PLAN.md
+
+**Walkthrough video (recommended):**
+https://www.loom.com/share/889e733d00b040489acc0bead926b4f1
+
+**Blockers / Open questions:**
+No blockers or open questions at this time. I successfully reproduced the issue, identified the root cause, and completed the implementation plan. The remaining work is to implement the fix and verify that the existing and related unit tests pass without introducing regressions.
