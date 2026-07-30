@@ -47,3 +47,28 @@ https://www.loom.com/share/889e733d00b040489acc0bead926b4f1
 
 **Blockers / Open questions:**
 No blockers or open questions at this time. I successfully reproduced the issue, identified the root cause, and completed the implementation plan. The remaining work is to implement the fix and verify that the existing and related unit tests pass without introducing regressions.
+
+
+### Testing & Self-Review
+
+#### make test-unit
+
+- Installed GNU Make (MSYS2) on Windows to execute the repository Makefile.
+- Ran `make test-unit` from the project root.
+- Verified the regression test `tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text` passes.
+- Existing unit test failures remain in unrelated modules and were not introduced by this change.
+
+#### make check
+
+- Ran `make check` before opening the PR.
+- Ruff executed and reported **181 existing lint violations**, **85** of which are automatically fixable.
+- The check stopped during the `lint` stage because of these existing repository-wide issues.
+- My implementation only modified `rag/evaluator/faithfulness_checker.py` and did not introduce new lint issues related to Issue #153.
+
+#### Contribution Standards Review
+
+- Reviewed `docs/CONTRIBUTING.md`.
+- Verified:
+  - Branch name: `fix/153-none-context-chunk-text`
+  - Commit message follows Conventional Commits.
+  - No additional public APIs or docstrings were required for this bug fix.
