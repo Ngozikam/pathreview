@@ -18,7 +18,6 @@ I selected this Tier 1 issue because it is a localized bug in the RAG evaluation
 
 **Cohort ledger:** [x] Issue added to cohort ledger
 
-
 ## Week 8 — Reproduction & Solution Planning
 
 **Reproduction commit link:**
@@ -48,7 +47,6 @@ https://www.loom.com/share/889e733d00b040489acc0bead926b4f1
 **Blockers / Open questions:**
 No blockers or open questions at this time. I successfully reproduced the issue, identified the root cause, and completed the implementation plan. The remaining work is to implement the fix and verify that the existing and related unit tests pass without introducing regressions.
 
-
 ### Testing & Self-Review
 
 #### make test-unit
@@ -71,3 +69,55 @@ No blockers or open questions at this time. I successfully reproduced the issue,
 - Verified the branch name follows the project naming convention.
 - Verified commit messages follow the Conventional Commits format.
 - Reviewed the existing module, class, and method docstrings in `rag/evaluator/faithfulness_checker.py`. The implementation did not introduce new functions or classes, and the existing docstrings remain accurate after the fix.
+
+
+## Week 9 — Solution building & PR submission
+
+### Check-in 1 (mid-week)
+
+**Current progress:**
+
+- I completed the implementation planned in `PLAN.md` by updating `FaithfulnessChecker.check()` to safely handle retrieved context chunks whose `text` value is `None`.
+- I replaced `chunk.get("text", "")` with `chunk.get("text") or ""`, preventing a `TypeError` while preserving the existing faithfulness scoring behavior.
+- I verified the implementation using the existing regression test `test_none_context_chunk_text` and confirmed the fix by running `make test-unit`.
+- I opened a Draft Pull Request for peer review.
+
+**Next steps:**
+
+- I will mark the PR as ready for review.
+- I will complete Check-in 2 and submit my branch URL.
+
+**Blockers:**
+
+None.
+
+---
+
+### Check-in 2 (end of week)
+
+**PR link:**
+
+https://github.com/ascherj/pathreview/pull/407
+
+**Branch:**
+
+`fix/153-none-context-chunk-text`
+
+**What you built:**
+
+I implemented a focused fix for Issue #153 by updating `FaithfulnessChecker.check()` to safely handle retrieved context chunks whose `text` value is `None`. I replaced `chunk.get("text", "")` with `chunk.get("text") or ""`, preventing a `TypeError` while preserving the existing faithfulness scoring behavior.
+
+**Tests added or updated:**
+
+I did not add new tests because the repository already contained regression tests covering this behavior. I verified the existing unit test file `tests/unit/test_faithfulness_checker.py`, including `test_none_context_chunk_text`, which confirms that `FaithfulnessChecker` safely handles context chunks whose `text` value is `None` without crashing. I also confirmed that the existing `test_missing_text_key_in_chunk` continues to cover the missing-key scenario.
+
+**Self-review confirmation:**
+
+- [x] make check passes
+- [x] make test-unit passes
+
+**Draft PR feedback received from:**
+
+`sh4wnbk`
+
+The reviewer confirmed my root cause analysis, implementation approach, and existing test coverage. Based on the feedback, I clarified the PR description to explain that the code change only modifies `rag/evaluator/faithfulness_checker.py`, while `PLAN.md` and `JOURNAL.md` are documentation updates required for the CodePath assignment. I replied to the reviewer to acknowledge the feedback and document the clarification.
