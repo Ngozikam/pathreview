@@ -80,6 +80,7 @@ No blockers or open questions at this time. I successfully reproduced the issue,
 - I completed the implementation planned in `PLAN.md` by updating `FaithfulnessChecker.check()` to safely handle retrieved context chunks whose `text` value is `None`.
 - I replaced `chunk.get("text", "")` with `chunk.get("text") or ""`, preventing a `TypeError` while preserving the existing faithfulness scoring behavior.
 - I verified the implementation using the existing regression test `test_none_context_chunk_text` and confirmed the fix by running `make test-unit`.
+
 - I opened a Draft Pull Request for peer review.
 
 **Next steps:**
