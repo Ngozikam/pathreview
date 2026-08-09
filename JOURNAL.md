@@ -122,3 +122,43 @@ I did not add new tests because the repository already contained regression test
 `sh4wnbk`
 
 The reviewer confirmed my root cause analysis, implementation approach, and existing test coverage. Based on the feedback, I clarified the PR description to explain that the code change only modifies `rag/evaluator/faithfulness_checker.py`, while `PLAN.md` and `JOURNAL.md` are documentation updates required for the CodePath assignment. I replied to the reviewer to acknowledge the feedback and document the clarification.
+
+## Week 10 — Iteration & reflection
+
+### Reviewer feedback
+
+**Feedback received:** [x] Yes  [ ] No — still awaiting review
+
+**Summary of feedback:**
+
+I received feedback on my pull request for Issue #153. The reviewer confirmed that my root cause analysis was correct: `chunk.get("text", "")` only uses the empty-string default when the key is missing, so a chunk containing `"text": None` could still pass `None` into `" ".join()` and cause a `TypeError`. The reviewer also confirmed that changing the expression to `chunk.get("text") or ""` correctly handles both a missing `text` key and a `None` value.
+
+The reviewer also noted that `test_none_context_chunk_text` and `test_missing_text_key_in_chunk` provide useful coverage for both cases and asked me to clarify the scope of the files changed in the pull request.
+
+**How you responded:**
+
+I thanked the reviewer for the detailed feedback and updated the PR description to clarify the scope of my contribution. I explained that the actual code change only modifies `rag/evaluator/faithfulness_checker.py`, while `PLAN.md` and `JOURNAL.md` are documentation files required for the CodePath assignment. I did not make additional code changes because the reviewer confirmed that the implementation and existing test coverage correctly addressed the issue.
+
+---
+
+### Reflection
+
+**What was harder than you expected?**
+
+Understanding where to make a small change in a large existing codebase was harder than I expected. Although Issue #153 required changing only `chunk.get("text", "")` to `chunk.get("text") or ""` in `rag/evaluator/faithfulness_checker.py`, I first needed to understand how `FaithfulnessChecker` worked, examine its tests, reproduce the failure, and make sure my change would not affect the existing scoring behavior. I learned that even a one-line fix can require significant investigation before changing the code.
+
+**What did you learn about working in a large codebase?**
+
+I learned that working in an existing codebase is different from starting my own project because I cannot simply write code in the way I prefer. I needed to understand the existing project structure, read `docs/CONTRIBUTING.md`, inspect `rag/evaluator/faithfulness_checker.py` and `tests/unit/test_faithfulness_checker.py`, and follow the repository's branch, commit, testing, and documentation conventions. This experience showed me the importance of tracing the relevant code and understanding the expected behavior before implementing a fix.
+
+**How did AI tools help — and where did they fall short?**
+
+AI tools helped me understand unfamiliar code, reason about the `None` handling problem, interpret test and terminal output, and understand the Git and pull request workflow. They were also useful for explaining why `chunk.get("text", "")` and `chunk.get("text") or ""` behave differently. However, I still had to work directly with the repository, reproduce the bug, run the tests, inspect the actual output, verify the suggested changes, and make decisions based on the project's contribution requirements rather than accepting AI suggestions automatically.
+
+**What would you do differently if you started over?**
+
+If I started over, I would explore the repository structure and contribution requirements earlier before beginning the implementation. I would also run commands such as `make test-unit` and `make check` earlier so that I could identify repository-wide pre-existing failures before making my change and compare the results afterward. I would also open the draft PR earlier in the process so there would be more time for feedback before the final submission.
+
+**What are you most proud of from this module?**
+
+I am most proud that I completed the full contribution process for a real issue rather than only writing an isolated piece of code. I reproduced issue #153, identified why a context chunk containing `"text": None` caused a `TypeError`, implemented the fix, verified the regression test, documented my work, created a pull request, received reviewer feedback, and responded to it professionally. Going through the complete process gave me a much better understanding of how developers contribute changes to an existing codebase using Git, GitHub, testing, documentation, and code review.
